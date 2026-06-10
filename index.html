@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoodMaps - Lieux Accessibles et Responsables</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>🌸 GoodMaps 🌸</h1>
+        <p>Découvrez des lieux accessibles et responsables près de chez vous 💖</p>
+    </header>
+
+    <main>
+        <section id="filters">
+            <h2>🔍 Filtres & Recherche</h2>
+            <div>
+                <label for="search-input">Rechercher en français :</label>
+                <input type="text" id="search-input" placeholder="Ex: café bio près de moi, restaurant accessible, parc proche">
+                <p class="search-hint">Vous pouvez écrire ce que vous voulez faire, pas seulement un nom de lieu.</p>
+            </div>
+            <div>
+                <label for="type-filter">Type de lieu :</label>
+                <select id="type-filter">
+                    <option value="">Tous</option>
+                    <option value="restaurant">🍽️ Restaurant</option>
+                    <option value="cafe">☕ Café</option>
+                    <option value="public_place">🏞️ Lieu public</option>
+                </select>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" id="wheelchair-filter"> ♿ Accessible en fauteuil roulant
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" id="eco-filter"> 🌱 Engagement écologique
+                </label>
+            </div>
+        </section>
+
+        <section id="places-list">
+            <h2>📍 Sélectionner un lieu</h2>
+            <div id="search-results">
+                <!-- Les résultats de recherche apparaîtront ici -->
+            </div>
+        </section>
+
+        <section id="map-section">
+            <h2>🗺️ Carte des lieux</h2>
+            <div id="map-container">
+                <div id="map"></div>
+                <div id="itinerary-instructions">
+                    <h3>📋 Instructions de l'itinéraire</h3>
+                    <div id="instructions-content">
+                        <!-- Les instructions apparaîtront ici -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="place-details" style="display: none;">
+            <h2>✨ Détails du lieu</h2>
+            <div id="details-content">
+                <!-- Les détails seront affichés ici -->
+            </div>
+            <button id="close-details">❌ Fermer</button>
+        </section>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,384 @@
+{
+  "meta": {
+    "project": "GoodMaps",
+    "version": "1.0",
+    "generated_at": "2026-01-08T12:00:00Z"
+  },
+  "places": [
+    {
+      "id": "place_1",
+      "name": "Le Jardin Écologique",
+      "type": "restaurant",
+      "location": {
+        "address": "123 Rue de la Nature",
+        "city": "Paris",
+        "latitude": 48.8566,
+        "longitude": 2.3522
+      },
+      "accessibility": {
+        "wheelchair_accessible": true,
+        "accessible_toilets": true,
+        "braille_menu": false
+      },
+      "ethics": {
+        "eco_friendly": true,
+        "local_products": true,
+        "fair_trade": true
+      },
+      "rating": 4.5,
+      "phone": "+33 1 42 33 44 55",
+      "opening_hours": "Lundi-Vendredi 12h-14h30, Samedi-Dimanche 11h-15h",
+      "last_updated": "2026-01-08T10:00:00Z"
+    },
+    {
+      "id": "place_2",
+      "name": "Café Vert",
+      "type": "cafe",
+      "location": {
+        "address": "456 Avenue des Verts",
+        "city": "Paris",
+        "latitude": 48.8606,
+        "longitude": 2.3376
+      },
+      "accessibility": {
+        "wheelchair_accessible": true,
+        "accessible_toilets": true,
+        "braille_menu": true
+      },
+      "ethics": {
+        "eco_friendly": true,
+        "local_products": true,
+        "fair_trade": false
+      },
+      "rating": 4.0,
+      "phone": "+33 1 43 54 65 76",
+      "opening_hours": "Tous les jours 8h-18h",
+      "last_updated": "2026-01-07T15:00:00Z"
+    },
+    {
+      "id": "place_3",
+      "name": "Parc Accessible",
+      "type": "public_place",
+      "location": {
+        "address": "789 Boulevard Libre",
+        "city": "Paris",
+        "latitude": 48.8648,
+        "longitude": 2.3499
+      },
+      "accessibility": {
+        "wheelchair_accessible": true,
+        "accessible_toilets": true,
+        "braille_menu": false
+      },
+      "ethics": {
+        "eco_friendly": true,
+        "local_products": false,
+        "fair_trade": false
+      },
+      "rating": 4.2,
+      "phone": "+33 1 40 05 06 07",
+      "opening_hours": "Ouvert 24h/24",
+      "last_updated": "2026-01-06T09:00:00Z"
+    },
+    {
+      "id": "place_4",
+      "name": "Bistro Local",
+      "type": "restaurant",
+      "location": {
+        "address": "101 Rue du Marché",
+        "city": "Paris",
+        "latitude": 48.8584,
+        "longitude": 2.2945
+      },
+      "accessibility": {
+        "wheelchair_accessible": false,
+        "accessible_toilets": true,
+        "braille_menu": false
+      },
+      "ethics": {
+        "eco_friendly": true,
+        "local_products": true,
+        "fair_trade": true
+      },
+      "rating": 3.8,
+      "phone": "+33 1 45 67 89 01",
+      "opening_hours": "Mardi-Dimanche 19h-23h",
+      "last_updated": "2026-01-05T18:00:00Z"
+    },
+    {
+      "id": "place_5",
+      "name": "Thé Équitable",
+      "type": "cafe",
+      "location": {
+        "address": "202 Place de la Solidarité",
+        "city": "Paris",
+        "latitude": 48.8534,
+        "longitude": 2.3488
+      },
+      "accessibility": {
+        "wheelchair_accessible": true,
+        "accessible_toilets": false,
+        "braille_menu": true
+      },
+      "ethics": {
+        "eco_friendly": false,
+        "local_products": true,
+        "fair_trade": true
+      },
+      "rating": 4.7,
+      "phone": "+33 1 46 78 90 12",
+      "opening_hours": "Lundi-Samedi 9h-19h",
+      "last_updated": "2026-01-04T12:00:00Z"
+    },
+    {
+      "id": "place_6",
+      "name": "Restaurant Bio Parisien",
+      "type": "restaurant",
+      "location": {
+        "address": "15 Rue des Écoliers",
+        "city": "Paris",
+        "latitude": 48.8475,
+        "longitude": 2.3468
+      },
+      "accessibility": {
+        "wheelchair_accessible": true,
+        "accessible_toilets": true,
+        "braille_menu": true
+      },
+      "ethics": {
+        "eco_friendly": true,
+        "local_products": true,
+        "fair_trade": true
+      },
+      "rating": 4.3,
+      "phone": "+33 1 47 89 01 23",
+      "opening_hours": "Mercredi-Dimanche 12h-14h30 et 19h-22h",
+      "last_updated": "2026-01-03T14:00:00Z"
+    },
+    {
+      "id": "place_7",
+      "name": "Café des Artistes",
+      "type": "cafe",
+      "location": {
+        "address": "78 Boulevard des Arts",
+        "city": "Paris",
+        "latitude": 48.8627,
+        "longitude": 2.3355
+      },
+      "accessibility": {
+        "wheelchair_accessible": false,
+        "accessible_toilets": true,
+        "braille_menu": false
+      },
+      "ethics": {
+        "eco_friendly": true,
+        "local_products": false,
+        "fair_trade": false
+      },
+      "rating": 4.1,
+      "phone": "+33 1 48 90 12 34",
+      "opening_hours": "Tous les jours 7h-20h",
+      "last_updated": "2026-01-02T16:00:00Z"
+    },
+    {
+      "id": "place_8",
+      "name": "Jardin du Luxembourg",
+      "type": "public_place",
+      "location": {
+        "address": "Rue de Vaugirard",
+        "city": "Paris",
+        "latitude": 48.8462,
+        "longitude": 2.3372
+      },
+      "accessibility": {
+        "wheelchair_accessible": true,
+        "accessible_toilets": true,
+        "braille_menu": false
+      },
+      "ethics": {
+        "eco_friendly": true,
+        "local_products": false,
+        "fair_trade": false
+      },
+      "rating": 4.6,
+      "phone": "+33 1 42 34 56 78",
+      "opening_hours": "Ouvert 24h/24 (fermé de minuit à 6h en hiver)",
+      "last_updated": "2026-01-01T11:00:00Z"
+    },
+    {
+      "id": "place_9",
+      "name": "Le Grenier Local",
+      "type": "restaurant",
+      "location": {
+        "address": "33 Rue de la Grange",
+        "city": "Paris",
+        "latitude": 48.8518,
+        "longitude": 2.3187
+      },
+      "accessibility": {
+        "wheelchair_accessible": true,
+        "accessible_toilets": false,
+        "braille_menu": false
+      },
+      "ethics": {
+        "eco_friendly": true,
+        "local_products": true,
+        "fair_trade": true
+      },
+      "rating": 4.4,
+      "phone": "+33 1 49 01 23 45",
+      "opening_hours": "Jeudi-Dimanche 18h-23h",
+      "last_updated": "2025-12-31T20:00:00Z"
+    },
+    {
+      "id": "place_10",
+      "name": "Pause Café Éthique",
+      "type": "cafe",
+      "location": {
+        "address": "92 Avenue de la Paix",
+        "city": "Paris",
+        "latitude": 48.8689,
+        "longitude": 2.3264
+      },
+      "accessibility": {
+        "wheelchair_accessible": true,
+        "accessible_toilets": true,
+        "braille_menu": true
+      },
+      "ethics": {
+        "eco_friendly": true,
+        "local_products": true,
+        "fair_trade": true
+      },
+      "rating": 4.8,
+      "phone": "+33 1 50 12 34 56",
+      "opening_hours": "Lundi-Vendredi 8h-17h, Samedi 9h-16h",
+      "last_updated": "2025-12-30T13:00:00Z"
+    },
+    {
+      "id": "place_11",
+      "name": "Square des Innocents",
+      "type": "public_place",
+      "location": {
+        "address": "Place Joachim du Bellay",
+        "city": "Paris",
+        "latitude": 48.8606,
+        "longitude": 2.3484
+      },
+      "accessibility": {
+        "wheelchair_accessible": true,
+        "accessible_toilets": false,
+        "braille_menu": false
+      },
+      "ethics": {
+        "eco_friendly": true,
+        "local_products": false,
+        "fair_trade": false
+      },
+      "rating": 4.0,
+      "phone": "+33 1 42 36 48 50",
+      "opening_hours": "Ouvert 24h/24",
+      "last_updated": "2025-12-29T10:00:00Z"
+    },
+    {
+      "id": "place_12",
+      "name": "Chez Marie Bio",
+      "type": "restaurant",
+      "location": {
+        "address": "45 Rue Marie Curie",
+        "city": "Paris",
+        "latitude": 48.8448,
+        "longitude": 2.3439
+      },
+      "accessibility": {
+        "wheelchair_accessible": true,
+        "accessible_toilets": true,
+        "braille_menu": false
+      },
+      "ethics": {
+        "eco_friendly": true,
+        "local_products": true,
+        "fair_trade": true
+      },
+      "rating": 4.2,
+      "phone": "+33 1 51 23 45 67",
+      "opening_hours": "Mardi-Samedi 12h-15h et 19h-22h",
+      "last_updated": "2025-12-28T17:00:00Z"
+    },
+    {
+      "id": "place_13",
+      "name": "Café du Coin Vert",
+      "type": "cafe",
+      "location": {
+        "address": "67 Rue du Vert",
+        "city": "Paris",
+        "latitude": 48.8571,
+        "longitude": 2.3412
+      },
+      "accessibility": {
+        "wheelchair_accessible": false,
+        "accessible_toilets": true,
+        "braille_menu": false
+      },
+      "ethics": {
+        "eco_friendly": true,
+        "local_products": true,
+        "fair_trade": false
+      },
+      "rating": 3.9,
+      "phone": "+33 1 52 34 56 78",
+      "opening_hours": "Tous les jours 9h-18h",
+      "last_updated": "2025-12-27T15:00:00Z"
+    },
+    {
+      "id": "place_14",
+      "name": "Parc Monceau",
+      "type": "public_place",
+      "location": {
+        "address": "35 Boulevard de Courcelles",
+        "city": "Paris",
+        "latitude": 48.8799,
+        "longitude": 2.3091
+      },
+      "accessibility": {
+        "wheelchair_accessible": true,
+        "accessible_toilets": true,
+        "braille_menu": false
+      },
+      "ethics": {
+        "eco_friendly": true,
+        "local_products": false,
+        "fair_trade": false
+      },
+      "rating": 4.5,
+      "phone": "+33 1 42 27 39 41",
+      "opening_hours": "Ouvert 24h/24 (fermé à 22h en hiver)",
+      "last_updated": "2025-12-26T12:00:00Z"
+    },
+    {
+      "id": "place_15",
+      "name": "L'Atelier Équitable",
+      "type": "restaurant",
+      "location": {
+        "address": "88 Rue de l'Équité",
+        "city": "Paris",
+        "latitude": 48.8523,
+        "longitude": 2.3321
+      },
+      "accessibility": {
+        "wheelchair_accessible": true,
+        "accessible_toilets": true,
+        "braille_menu": true
+      },
+      "ethics": {
+        "eco_friendly": true,
+        "local_products": true,
+        "fair_trade": true
+      },
+      "rating": 4.6,
+      "phone": "+33 1 53 45 67 89",
+      "opening_hours": "Vendredi-Dimanche 12h-16h et 18h-23h",
+      "last_updated": "2025-12-25T19:00:00Z"
+    }
+  ]
+}
