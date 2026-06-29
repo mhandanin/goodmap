@@ -184,6 +184,33 @@ main {
     font-size: 1.8rem;
 }
 
+#search-area-btn {
+    background: linear-gradient(135deg, #FF69B4, #DDA0DD);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: 'Nunito', sans-serif;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+}
+
+#search-area-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 105, 180, 0.3);
+}
+
+#data-source-status {
+    color: #8A2BE2;
+    font-style: italic;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+}
+
 #map-container {
     display: flex;
     gap: 1rem;

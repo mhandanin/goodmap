@@ -28,16 +28,184 @@ const FEATURE_KEYWORDS = {
 const NEARBY_KEYWORDS = ['pres de moi', 'près de moi', 'autour de moi', 'proche', 'a proximite', 'à proximité', 'autour', 'near me'];
 const STOP_WORDS = new Set(['je', 'veux', 'voudrais', 'souhaite', 'trouve', 'trouver', 'cherche', 'chercher', 'un', 'une', 'des', 'de', 'du', 'la', 'le', 'les', 'au', 'aux', 'pour', 'vers', 'dans', 'sur', 'en', 'mon', 'ma', 'mes', 'me', 'moi', 'pres', 'près', 'proche', 'autour', 'ici', 'aller', 'faire', 'peux', 'peut', 'veux', 'avoir', 'aller']);
 
-// Charger les données depuis data.json
-async function loadData() {
+// Source de données externe : API Overpass (OpenStreetMap) — données en direct, sans clé API
+// Plusieurs miroirs sont essayés dans l'ordre pour plus de fiabilité
+const OVERPASS_ENDPOINTS = [
+    'https://overpass-api.de/api/interpreter',
+    'https://overpass.private.coffee/api/interpreter',
+    'https://overpass.kumi.systems/api/interpreter'
+];
+const PARIS_CENTER = { latitude: 48.8566, longitude: 2.3522 };
+const SEARCH_RADIUS_METERS = 1500;
+
+// Construire la requête Overpass autour d'un point donné
+// Restaurants/cafés sont quasi toujours des points (node), les parcs des contours (way)
+function buildOverpassQuery(center, radius) {
+    const filters = [
+        'node["amenity"="restaurant"]["name"]',
+        'node["amenity"="cafe"]["name"]',
+        'way["leisure"="park"]["name"]'
+    ];
+    const body = filters
+        .map(filter => `  ${filter}(around:${radius},${center.latitude},${center.longitude});`)
+        .join('\n');
+    return `[out:json][timeout:25];\n(\n${body}\n);\nout center 60;`;
+}
+
+// Déduire le type GoodMaps à partir des tags OpenStreetMap
+function osmTypeToAppType(tags) {
+    if (tags.amenity === 'restaurant') return 'restaurant';
+    if (tags.amenity === 'cafe') return 'cafe';
+    if (tags.leisure === 'park') return 'public_place';
+    return null;
+}
+
+// Transformer un élément OpenStreetMap au format utilisé par l'application
+function mapOverpassElement(element) {
+    const tags = element.tags || {};
+    const type = osmTypeToAppType(tags);
+    if (!type) return null;
+
+    const latitude = element.lat != null ? element.lat : (element.center && element.center.lat);
+    const longitude = element.lon != null ? element.lon : (element.center && element.center.lon);
+    if (latitude == null || longitude == null) return null;
+
+    const address = [tags['addr:housenumber'], tags['addr:street']]
+        .filter(Boolean)
+        .join(' ')
+        .trim();
+
+    return {
+        id: `osm_${element.type}_${element.id}`,
+        name: tags.name,
+        type,
+        location: {
+            address: address || 'Adresse non renseignée',
+            city: tags['addr:city'] || tags['contact:city'] || tags['addr:suburb'] || '—',
+            latitude,
+            longitude
+        },
+        accessibility: {
+            wheelchair_accessible: tags.wheelchair === 'yes',
+            accessible_toilets: tags['toilets:wheelchair'] === 'yes',
+            braille_menu: tags.braille === 'yes' || tags['menu:braille'] === 'yes'
+        },
+        ethics: {
+            eco_friendly: tags.organic === 'yes' || tags.organic === 'only',
+            local_products: tags['diet:local'] === 'yes' || tags.produce === 'local',
+            fair_trade: tags.fair_trade === 'yes' || tags.fairtrade === 'yes'
+        },
+        rating: null, // OpenStreetMap ne fournit pas de note
+        phone: tags.phone || tags['contact:phone'] || 'Non renseigné',
+        opening_hours: tags.opening_hours || 'Non renseignés',
+        last_updated: new Date().toISOString()
+    };
+}
+
+// Récupérer les lieux en direct depuis OpenStreetMap autour d'un point
+// On essaie chaque miroir jusqu'à obtenir une réponse valide
+async function fetchPlacesAround(center, radius) {
+    const query = buildOverpassQuery(center, radius);
+    let data = null;
+    let lastError = null;
+
+    for (const endpoint of OVERPASS_ENDPOINTS) {
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: query
+            });
+            if (!response.ok) {
+                throw new Error(`${endpoint} a répondu ${response.status}`);
+            }
+            data = await response.json();
+            break;
+        } catch (error) {
+            console.warn('Miroir Overpass indisponible:', error.message);
+            lastError = error;
+        }
+    }
+
+    if (!data) {
+        throw lastError || new Error('Aucun miroir Overpass disponible');
+    }
+
+    const places = (data.elements || [])
+        .map(mapOverpassElement)
+        .filter(Boolean);
+
+    // Dédoublonnage par nom + coordonnées arrondies
+    const seen = new Set();
+    return places.filter(place => {
+        const key = `${normalizeText(place.name)}@${place.location.latitude.toFixed(4)}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+}
+
+// Charger les données depuis la source externe (Overpass), avec data.json en secours
+async function loadData(center = PARIS_CENTER) {
+    setLoadingState(true);
+    try {
+        const places = await fetchPlacesAround(center, SEARCH_RADIUS_METERS);
+        if (places.length === 0) {
+            throw new Error('Aucun lieu reçu depuis OpenStreetMap');
+        }
+        allPlaces = places;
+        filteredPlaces = [...allPlaces];
+        notifyDataSource(`🌍 ${places.length} lieux en direct depuis OpenStreetMap`);
+    } catch (error) {
+        console.error('Erreur lors du chargement depuis OpenStreetMap:', error);
+        await loadFallbackData();
+    } finally {
+        setLoadingState(false);
+    }
+}
+
+// Données de secours locales si la source externe est indisponible
+async function loadFallbackData() {
     try {
         const response = await fetch('data.json');
         const data = await response.json();
         allPlaces = data.places;
         filteredPlaces = [...allPlaces];
+        notifyDataSource('⚠️ Source externe indisponible — données de secours affichées');
     } catch (error) {
-        console.error('Erreur lors du chargement des données:', error);
+        console.error('Erreur lors du chargement des données de secours:', error);
+        notifyDataSource('❌ Impossible de charger les lieux');
     }
+}
+
+// Recharger de vrais lieux autour de la zone actuellement affichée sur la carte
+async function searchInThisArea() {
+    if (!map) return;
+    const center = map.getCenter();
+    await loadData({ latitude: center.lat, longitude: center.lng });
+    applyFilters();
+}
+
+// Afficher l'état de chargement dans la liste des résultats
+function setLoadingState(isLoading) {
+    if (!isLoading) return;
+    const resultsContainer = document.getElementById('search-results');
+    if (resultsContainer) {
+        resultsContainer.innerHTML = '<p style="text-align: center; color: #4B0082; font-style: italic;">⏳ Chargement des lieux en direct...</p>';
+    }
+}
+
+// Mettre à jour le petit message indiquant la source des données
+function notifyDataSource(message) {
+    const status = document.getElementById('data-source-status');
+    if (status) {
+        status.textContent = message;
+    }
+}
+
+// Formater l'affichage de la note (les données externes n'en ont pas)
+function formatRating(rating) {
+    return rating != null ? `⭐ ${rating}/5` : 'Non renseignée';
 }
 
 function normalizeText(text) {
@@ -178,7 +346,7 @@ function scorePlace(place, profile) {
         }
     }
 
-    score += place.rating * 2;
+    score += (place.rating || 0) * 2;
 
     return {
         place,
@@ -201,7 +369,7 @@ function sortPlacesForDisplay(places, query) {
                 return left.distanceKm - right.distanceKm;
             }
 
-            return right.place.rating - left.place.rating;
+            return (right.place.rating || 0) - (left.place.rating || 0);
         });
 
     return rankedPlaces;
@@ -281,7 +449,7 @@ function displaySearchResults(places) {
             <p><strong>Type:</strong> ${translateType(place.type)}</p>
             <p><strong>Adresse:</strong> ${place.location.address}, ${place.location.city}</p>
             ${distanceText}
-            <p><strong>Note:</strong> ⭐ ${place.rating}/5</p>
+            <p><strong>Note:</strong> ${formatRating(place.rating)}</p>
         `;
 
         resultsContainer.appendChild(resultItem);
@@ -339,7 +507,7 @@ function showPlaceDetails(place) {
             <li>🥕 Produits locaux: ${place.ethics.local_products ? 'Oui' : 'Non'}</li>
             <li>🤝 Commerce équitable: ${place.ethics.fair_trade ? 'Oui' : 'Non'}</li>
         </ul>
-        <p><strong>Note:</strong> ⭐ ${place.rating}/5</p>
+        <p><strong>Note:</strong> ${formatRating(place.rating)}</p>
         <p><strong>Dernière mise à jour:</strong> ${new Date(place.last_updated).toLocaleDateString('fr-FR')}</p>
         <button id="get-itinerary-btn" onclick="getItinerary('${place.id}')">🗺️ Obtenir l'itinéraire</button>
     `;
@@ -489,4 +657,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Fermer les détails
     document.getElementById('close-details').addEventListener('click', closeDetails);
+
+    // Recharger de vrais lieux autour de la zone affichée
+    document.getElementById('search-area-btn').addEventListener('click', searchInThisArea);
 });
